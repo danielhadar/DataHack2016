@@ -1,4 +1,4 @@
-# -- SuperFish -- DataHack2016 -- Jerusalem --
+-- SuperFish -- DataHack2016 -- Jerusalem --
 
                                  .
                                 A       ;
