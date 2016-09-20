@@ -1,5 +1,6 @@
 <p align="center">
 <b>-- SuperFish -- DataHack2016 -- Jerusalem --</b>
+</p>
 
                                  .
                                 A       ;
@@ -25,4 +26,3 @@
                      `|/-.      \ /   \ /,---`\         
                       /   `._____V_____V'
                                  '     '
-</p>
