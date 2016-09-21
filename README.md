@@ -2,9 +2,6 @@
 <b>-- SuperFish -- DataHack2016 -- Jerusalem --</b>
 </p>
 
-<p align="center">
-CheckList
-</p>
 <ul>
 <li> Visualisations </li>
 <li> K-Means to geographical clusters (K=100...200) </li>
