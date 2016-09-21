@@ -2,6 +2,17 @@
 <b>-- SuperFish -- DataHack2016 -- Jerusalem --</b>
 </p>
 
+<p align="center">
+CheckList
+---------
+</p>
+<ul>
+<li> Visualisations </li>
+<li> K-Means to geographical clusters (K=100...200) </li>
+<li> For each 2 clusters - calculate regressor </li>
+<li> Use validation to learn parameters for weights vector </li>
+</ul>
+
                                  .
                                 A       ;
                       |   ,--,-/ \---,-/|  ,
