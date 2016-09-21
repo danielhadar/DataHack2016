@@ -4,7 +4,6 @@
 
 <p align="center">
 CheckList
----------
 </p>
 <ul>
 <li> Visualisations </li>
