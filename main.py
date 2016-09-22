@@ -11,23 +11,21 @@ import pandas as pd
 n_clusters = 10
 
 if __name__ == '__main__':
-    train_df, valid_df, test_df = utils.loadings('pkl')
 
     # >> run only once (to add permanent cluster labels to the data) <<
-    # utils.make_pickles()
-    # long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
-    # print("calc clusters")
-    # labels, centers = utils.calc_clusters(np.column_stack((long_coords, lat_coords)), n_clusters=n_clusters, n_init=10)
-    # np.savetxt('labels.csv', labels, delimiter=',')
-    # np.savetxt('centers.csv', centers, delimiter=',')
-    # print("add lables")
-    # utils.add_labels_to_data(labels, train_df, valid_df, test_df)
-    # print("draw heatmap")
-    # utils.draw_clusters_heatmap(train_df, n_clusters=n_clusters)
+    print("make pickle")
+    utils.make_pickles()
+    train_df, valid_df, test_df = utils.loadings('pkl')
+    long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
+    print("calc clusters")
+    labels, centers = utils.calc_clusters(np.column_stack((long_coords, lat_coords)), n_clusters=n_clusters, n_init=10)
+    print("add lables")
+    utils.add_labels_to_data(labels, train_df, valid_df, test_df)
+    print("draw heatmap")
+    utils.draw_clusters_heatmap(train_df, n_clusters=n_clusters)
 
 
-    utils.add_time_cluster_column(train_df)
-
+    train_df, valid_df, test_df = utils.loadings('pkl')
     # learning.cross_validation(pd.concat([train_df, valid_df]), validation_percent=.033)
 
 

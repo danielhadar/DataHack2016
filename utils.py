@@ -28,14 +28,18 @@ def make_pickles():
     for data_file in data_files:
         file_path_base = os.path.join(parent_dir, data_file)
         df = pd.read_csv(file_path_base + '.csv')
-        # if 'train' in file_path_base:
         enrich(df)
         df.to_pickle(file_path_base + '.pkl')
 
 
-def enrich(df):
+def enrich(df, k=8):
     df['weekday'] = df['from_datetime'].apply(get_day_class)
-    df['time_of_day'] = df['from_datetime'].apply(get_time_class)
+    df['time'] = df['from_datetime'].apply(get_time_class)
+
+    # add time cluster column
+    kmeans = KMeans(init='k-means++', n_clusters=k, n_init=10)
+    kmeans.fit(np.array(df.time)[np.newaxis].T)
+    df['c_time'] = kmeans.predict(np.array(df.time).reshape(-1, 1))
 
 
 def calc_clusters(points, init='random', n_clusters=200, n_init=10):
@@ -111,9 +115,3 @@ def get_time_class(date_str):
     if timestamp.minute >= 30:
         time_class += .5
     return time_class
-
-
-def add_time_cluster_column(df, k=8):
-    print(df.head(1))
-    kmeans = KMeans(init='k-means++', n_clusters=k, n_init=10)
-    kmeans.fit(np.array(df.time)[np.newaxis].T)
