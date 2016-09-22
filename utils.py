@@ -51,5 +51,6 @@ def add_labels_to_data(labels, train_df, valid_df, test_df):
     test_df.loc[:, 'c_in'] = labels[2*x + 2*y:2*x + 2*y + z]
     test_df.loc[:, 'c_out'] = labels[2*x + 2*y + z:2*x + 2*y + 2*z]
 
-    print(len(labels))
-    print(2*x + 2*y + 2*z)
+    train_df.to_pickle(os.path.join(parent_dir, 'taxi.train.nyc.pkl'))
+    valid_df.to_pickle(os.path.join(parent_dir, 'taxi.valid.pkl'))
+    test_df.to_pickle(os.path.join(parent_dir, 'taxi.test.no.label.pkl'))
