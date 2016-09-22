@@ -2,62 +2,49 @@ import os
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.externals import joblib
-import matplotlib.pyplot as plt
-from matplotlib import pyplot as plt
-from scipy.cluster.hierarchy import dendrogram, linkage
 import numpy as np
-from scipy.cluster.hierarchy import cophenet
-from scipy.spatial.distance import pdist
-import math
 
 # constants
 parent_dir = '.'
+data_files = ['taxi.train.nyc', 'taxi.valid.csv', 'taxi.test.no.label']
 
 
-def loadings(type):
-    # type is 'csv' or 'pkl'
+def loadings(file_type):
+    loaders = {'csv': pd.read_csv,
+               'pkl': pd.read_pickle}
+    if file_type not in loaders.keys():
+        return None
 
-    if type == 'csv':
-        train_df = pd.read_csv(os.path.join(parent_dir, 'taxi.train.nyc.csv'))
-        valid_df = pd.read_csv(os.path.join(parent_dir, 'taxi.valid.csv'))
-        test_df = pd.read_csv(os.path.join(parent_dir, 'taxi.test.no.label.csv'))
-    elif type == 'pkl':
-        train_df = pd.read_pickle(os.path.join(parent_dir, 'taxi.train.nyc.pkl'))
-        valid_df = pd.read_pickle(os.path.join(parent_dir, 'taxi.valid.pkl'))
-        test_df = pd.read_pickle(os.path.join(parent_dir, 'taxi.test.no.label.pkl'))
+    loader = loaders[file_type]
+    frames = []
+    for data_file in data_files:
+        file_name = os.path.join(parent_dir, data_file) + '.' + file_type
+        frames.append(loaders(file_name))
 
-    return train_df, valid_df, test_df
+    return frames
 
-def calc_clusters2(points):
-    # points is a tuple of 2 arrays - long and lat
-    Z = linkage(points)
-    c, coph_dists = cophenet(Z, pdist(points))
-    print(c)
-    plt.title('Hierarchical Clustering Dendrogram (truncated)')
-    plt.xlabel('sample index or (cluster size)')
-    plt.ylabel('distance')
-    dendrogram(
-        Z,
-        truncate_mode='lastp',  # show only the last p merged clusters
-        p=30,  # show only the last p merged clusters
-        leaf_rotation=90.,
-        leaf_font_size=12.,
-        show_contracted=True,  # to get a distribution impression in truncated branches
-    )
-    plt.show()
+
+def make_pickles():
+    for data_file in data_files:
+        file_path_base = os.path.join(parent_dir, data_file)
+        df = pd.read_csv(file_path_base + '.csv')
+        # if 'train' in file_path_base:
+        enrich(df)
+        df.to_pickle(file_path_base + '.pkl')
+
+
+def enrich(df):
+    df['weekday'] = df['from_datetime'].apply(get_day_class)
+    df['time_of_day'] = df['from_datetime'].apply(get_time_class)
 
 
 def calc_clusters(points, init='random', n_clusters=200, n_init=10):
     # points is a tuple of 2 arrays - long and lat
-
     est = KMeans(init=init, n_clusters=n_clusters, n_init=n_init)
     est.fit(points)
+
     joblib.dump(est, 'kmeans_estimator.joblib.pkl', compress=9) # save the classifier
     return est.labels_, est.cluster_centers_
-
-    # from scipy.cluster.vq import kmeans2
-    # centroids, labels = kmeans2(points, k=n_clusters, minit='uniform')
-    # return labels, centroids
 
 
 def stich_coordinates(train_df, valid_df, test_df):
@@ -116,6 +103,7 @@ def get_day_class(date_str):
     else:
         # Monday
         return 4
+
 
 def get_time_class(date_str):
     timestamp = pd.Timestamp(date_str)

@@ -11,6 +11,7 @@ n_clusters = 10
 
 if __name__ == '__main__':
     train_df, valid_df, test_df = utils.loadings('pkl')
+    utils.make_pickles()
 
     print(train_df.head(3))
 
