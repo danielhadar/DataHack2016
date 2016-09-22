@@ -5,8 +5,7 @@
 ## TODO
 <li> Handle outliers in test-data! </li>
 
-- Visualisations 
-- K-Means to geographical clusters (K=100...200) 
+- add column for day of week: fri, sat, sun, mon, week (tue-thu)
 - For each 2 clusters - calculate regressor 
 - Use validation to learn parameters for weights vector 
 

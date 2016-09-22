@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from sklearn.cluster import KMeans
+from sklearn.externals import joblib
 import numpy as np
 
 # constants
@@ -26,6 +27,7 @@ def calc_clusters(points, init='k-means++', n_clusters=200, n_init=1):
     est = KMeans(init=init, n_clusters=n_clusters, n_init=n_init)
     est.fit(points)
 
+    joblib.dump(est, 'kmeans_estimator.joblib.pkl', compress=9) # save the classifier
     return est.labels_, est.cluster_centers_
 
 

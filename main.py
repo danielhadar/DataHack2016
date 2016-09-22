@@ -7,14 +7,17 @@ from sklearn.svm import OneClassSVM
 import utils
 
 if __name__ == '__main__':
-    # >> run only once (to add permanent cluster labels to the data) <<
-    # long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
-    # labels, centers = utils.calc_clusters(np.column_stack((long_coords, lat_coords)))
-    # np.savetxt('labels.csv', labels, delimiter=',')
-    # np.savetxt('centers.csv', centers, delimiter=',')
-    # utils.add_labels_to_data(labels, train_df, valid_df, test_df)
-
     train_df, valid_df, test_df = utils.loadings('pkl')
+
+    # >> run only once (to add permanent cluster labels to the data) <<
+    long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
+    labels, centers = utils.calc_clusters(np.column_stack((long_coords, lat_coords)))
+    np.savetxt('labels.csv', labels, delimiter=',')
+    np.savetxt('centers.csv', centers, delimiter=',')
+    utils.add_labels_to_data(labels, train_df, valid_df, test_df)
+
+
+
 
 
 
