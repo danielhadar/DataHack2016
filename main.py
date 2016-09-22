@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
 
 
-
+quit()
 # - add clusters -
 # calculate clusters
 
