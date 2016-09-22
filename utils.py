@@ -2,9 +2,13 @@ import os
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.externals import joblib
-import numpy as np
 import matplotlib.pyplot as plt
-
+from matplotlib import pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage
+import numpy as np
+from scipy.cluster.hierarchy import cophenet
+from scipy.spatial.distance import pdist
+import math
 
 # constants
 parent_dir = '.'
@@ -12,6 +16,7 @@ parent_dir = '.'
 
 def loadings(type):
     # type is 'csv' or 'pkl'
+
     if type == 'csv':
         train_df = pd.read_csv(os.path.join(parent_dir, 'taxi.train.nyc.csv'))
         valid_df = pd.read_csv(os.path.join(parent_dir, 'taxi.valid.csv'))
@@ -23,14 +28,36 @@ def loadings(type):
 
     return train_df, valid_df, test_df
 
-
-def calc_clusters(points, init='k-means++', n_clusters=200, n_init=1):
+def calc_clusters2(points):
     # points is a tuple of 2 arrays - long and lat
+    Z = linkage(points)
+    c, coph_dists = cophenet(Z, pdist(points))
+    print(c)
+    plt.title('Hierarchical Clustering Dendrogram (truncated)')
+    plt.xlabel('sample index or (cluster size)')
+    plt.ylabel('distance')
+    dendrogram(
+        Z,
+        truncate_mode='lastp',  # show only the last p merged clusters
+        p=30,  # show only the last p merged clusters
+        leaf_rotation=90.,
+        leaf_font_size=12.,
+        show_contracted=True,  # to get a distribution impression in truncated branches
+    )
+    plt.show()
+
+
+def calc_clusters(points, init='random', n_clusters=200, n_init=10):
+    # points is a tuple of 2 arrays - long and lat
+
     est = KMeans(init=init, n_clusters=n_clusters, n_init=n_init)
     est.fit(points)
-
     joblib.dump(est, 'kmeans_estimator.joblib.pkl', compress=9) # save the classifier
     return est.labels_, est.cluster_centers_
+
+    # from scipy.cluster.vq import kmeans2
+    # centroids, labels = kmeans2(points, k=n_clusters, minit='uniform')
+    # return labels, centroids
 
 
 def stich_coordinates(train_df, valid_df, test_df):
@@ -65,8 +92,14 @@ def train_regressors(train_df):
     pass
 
 
-def draw_clusters_heatmap(df):
-    mat = np.zeros((200, 200))
+def draw_clusters_heatmap(df, n_clusters):
+    mat = np.zeros((n_clusters, n_clusters))
     for index, row in df.iterrows():
         mat[int(row.c_in), int(row.c_out)] += 1
+
     np.savetxt('mat.csv', mat, delimiter=',')
+
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111)
+    # ax.imshow(mat, extent=[0, 100, 0, 1], aspect=100)
+    # plt.show()
