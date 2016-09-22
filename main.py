@@ -11,21 +11,21 @@ n_clusters = 10
 
 if __name__ == '__main__':
     train_df, valid_df, test_df = utils.loadings('pkl')
-    utils.make_pickles()
+    # utils.make_pickles()
 
-    print(train_df.head(3))
 
     # >> run only once (to add permanent cluster labels to the data) <<
-    # long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
-    # print("calc clusters")
-    # labels, centers = utils.calc_clusters(np.column_stack((long_coords, lat_coords)), n_clusters=n_clusters, n_init=10)
-    # np.savetxt('labels.csv', labels, delimiter=',')
-    # np.savetxt('centers.csv', centers, delimiter=',')
-    # print("add lables")
-    # utils.add_labels_to_data(labels, train_df, valid_df, test_df)
-    # print("draw heatmap")
-    # utils.draw_clusters_heatmap(train_df, n_clusters=n_clusters)
+    long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
+    print("calc clusters")
+    labels, centers = utils.calc_clusters(np.column_stack((long_coords, lat_coords)), n_clusters=n_clusters, n_init=10)
+    np.savetxt('labels.csv', labels, delimiter=',')
+    np.savetxt('centers.csv', centers, delimiter=',')
+    print("add lables")
+    utils.add_labels_to_data(labels, train_df, valid_df, test_df)
+    print("draw heatmap")
+    utils.draw_clusters_heatmap(train_df, n_clusters=n_clusters)
 
+    print(train_df.head(3))
 
 
 
