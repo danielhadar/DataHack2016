@@ -107,7 +107,7 @@ def get_day_class(date_str):
 
 def get_time_class(date_str):
     timestamp = pd.Timestamp(date_str)
-    time_class = timestamp.hour * 2
+    time_class = timestamp.hour
     if timestamp.minute >= 30:
-        time_class += 1
+        time_class += 0.5
     return time_class
