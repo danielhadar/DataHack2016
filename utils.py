@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # constants
 parent_dir = '.'
-data_files = ['taxi.train.nyc', 'taxi.valid.csv', 'taxi.test.no.label']
+data_files = ['taxi.train.nyc', 'taxi.valid', 'taxi.test.no.label']
 
 
 def loadings(file_type):
@@ -21,7 +21,7 @@ def loadings(file_type):
     frames = []
     for data_file in data_files:
         file_name = os.path.join(parent_dir, data_file) + '.' + file_type
-        frames.append(loaders(file_name))
+        frames.append(loader(file_name))
 
     return frames
 
