@@ -1,17 +1,27 @@
-import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
-import os
 import matplotlib.pyplot as plt
 import matplotlib
 from sklearn.decomposition import PCA
 from sklearn.covariance import EllipticEnvelope
 from sklearn.svm import OneClassSVM
-from utils import *
+import utils
 
 if __name__ == '__main__':
-    train_df, valid_df, test_df = loadings('pkl')
+    train_df, valid_df, test_df = utils.loadings('pkl')
 
+    long_coords = []
+    lat_coords = []
+    for df in [train_df, valid_df, test_df]:
+        print(np.shape(df))
+        long_coords += df.from_longitude.tolist() + df.to_longitude.tolist()
+        lat_coords += df.from_latitude.tolist() + df.to_latitude.tolist()
+    print(np.shape(long_coords))
+    print(np.shape(lat_coords))
+    quit()
+
+    # utils.calc_clusters((train_df.from_longitude.tolist() + train_df.to_longitude.tolist(),
+    #                      train_df.from_latitude.tolist() + train_df.to_latitude.tolist()))
 
 
 
