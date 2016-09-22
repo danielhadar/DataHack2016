@@ -103,3 +103,23 @@ def draw_clusters_heatmap(df, n_clusters):
     # ax = fig.add_subplot(111)
     # ax.imshow(mat, extent=[0, 100, 0, 1], aspect=100)
     # plt.show()
+
+
+def get_day_class(date_str):
+    weekday = pd.Timestamp(date_str).isoweekday()
+    if weekday in [2, 3, 4]:
+        # Tuesday - Thursday
+        return 0
+    elif weekday in [5, 6, 7]:
+        # Friday - Sunday -> 1-3
+        return weekday - 4
+    else:
+        # Monday
+        return 4
+
+def get_time_class(date_str):
+    timestamp = pd.Timestamp(date_str)
+    time_class = timestamp.hour * 2
+    if timestamp.minute >= 30:
+        time_class += 1
+    return time_class
