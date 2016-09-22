@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import matplotlib
 from sklearn.decomposition import PCA
@@ -10,17 +9,18 @@ import utils
 if __name__ == '__main__':
     train_df, valid_df, test_df = utils.loadings('pkl')
 
-    long_coords = []
-    lat_coords = []
-    for df in [train_df, valid_df, test_df]:
-        long_coords += df.from_longitude.tolist() + df.to_longitude.tolist()
-        lat_coords += df.from_latitude.tolist() + df.to_latitude.tolist()
-    print(np.shape(long_coords))
-    print(np.shape(lat_coords))
-    quit()
+    # long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
 
-    # utils.calc_clusters((train_df.from_longitude.tolist() + train_df.to_longitude.tolist(),
-    #                      train_df.from_latitude.tolist() + train_df.to_latitude.tolist()))
+    # labels, centers = utils.calc_clusters(np.column_stack((long_coords, lat_coords)))
+
+    labels = np.genfromtxt('labels.csv', delimiter=',')
+    utils.add_labels_to_data(labels, train_df, valid_df, test_df)
+    print(train_df.head(2))
+    print(train_df.tail(2))
+    print(valid_df.head(2))
+
+
+    quit()
 
 
 

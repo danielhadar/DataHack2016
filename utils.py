@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from sklearn.cluster import KMeans
 import numpy as np
 
 # constants
@@ -19,6 +20,36 @@ def loadings(type):
 
     return train_df, valid_df, test_df
 
-def calc_clusters(points):
+
+def calc_clusters(points, init='k-means++', n_clusters=200, n_init=1):
     # points is a tuple of 2 arrays - long and lat
-    pass
+    est = KMeans(init=init, n_clusters=n_clusters, n_init=n_init)
+    est.fit(points)
+
+    return est.labels_, est.cluster_centers_
+
+
+def stich_coordinates(train_df, valid_df, test_df):
+    long_coords = []
+    lat_coords = []
+    for df in [train_df, valid_df, test_df]:
+        long_coords += df.from_longitude.tolist() + df.to_longitude.tolist()
+        lat_coords += df.from_latitude.tolist() + df.to_latitude.tolist()
+
+    return long_coords, lat_coords
+
+
+def add_labels_to_data(labels, train_df, valid_df, test_df):
+    x = len(train_df)
+    y = len(valid_df)
+    z = len(test_df)
+
+    train_df.loc[:, 'c_in'] = labels[:x]
+    train_df.loc[:, 'c_out'] = labels[x:2*x]
+    valid_df.loc[:, 'c_in'] = labels[2*x:2*x + y]
+    valid_df.loc[:, 'c_out'] = labels[2*x + y:2*x + 2*y]
+    train_df.loc[:, 'c_in'] = labels[2*x + 2*y:2*x + 2*y + z]
+    train_df.loc[:, 'c_out'] = labels[2*x + 2*y + z:2*x + 2*y + 2*z]
+
+    print(len(labels))
+    print(2*x + 2*y + 2*z)
