@@ -4,13 +4,7 @@
 
 ## TODO
 <li> Handle outliers in test-data! </li>
-
-- add columns
-    - day of week: fri, sat, sun, mon, week (tue-thu)
-    - hour of day: divide to half of hours
-    - weather: check
-- For each 2 clusters - calculate regressor 
-- Use validation to learn parameters for weights vector 
+<li> n_estimators = 1000 !!! </li>
 
 ## Requirements
 

@@ -36,19 +36,14 @@ def enrich(df, k=8):
     df['weekday'] = df['from_datetime'].apply(get_day_class)
     df['time'] = df['from_datetime'].apply(get_time_class)
 
-    # add time cluster column
-    kmeans = KMeans(init='k-means++', n_clusters=k, n_init=10)
-    kmeans.fit(np.array(df.time)[np.newaxis].T)
-    df['c_time'] = kmeans.predict(np.array(df.time).reshape(-1, 1))
-
 
 def calc_clusters(points, init='random', n_clusters=200, n_init=10):
     # points is a tuple of 2 arrays - long and lat
     est = KMeans(init=init, n_clusters=n_clusters, n_init=n_init)
     est.fit(points)
 
-    joblib.dump(est, 'kmeans_estimator.joblib.pkl', compress=9) # save the classifier
-    return est.labels_, est.cluster_centers_
+    # joblib.dump(est, 'kmeans_estimator.joblib.pkl', compress=9) # save the classifier
+    return est.labels_, est.cluster_centers_, est
 
 
 def stich_coordinates(train_df, valid_df, test_df):
@@ -61,26 +56,25 @@ def stich_coordinates(train_df, valid_df, test_df):
     return long_coords, lat_coords
 
 
-def add_labels_to_data(labels, train_df, valid_df, test_df):
+def add_labels_to_data(geo_labels, time_labels, train_df, valid_df, test_df):
     x = len(train_df)
     y = len(valid_df)
     z = len(test_df)
 
-    train_df.loc[:, 'c_in'] = labels[:x]
-    train_df.loc[:, 'c_out'] = labels[x:2*x]
-    valid_df.loc[:, 'c_in'] = labels[2*x:2*x + y]
-    valid_df.loc[:, 'c_out'] = labels[2*x + y:2*x + 2*y]
-    test_df.loc[:, 'c_in'] = labels[2*x + 2*y:2*x + 2*y + z]
-    test_df.loc[:, 'c_out'] = labels[2*x + 2*y + z:2*x + 2*y + 2*z]
+    train_df.loc[:, 'c_in'] = geo_labels[:x]
+    train_df.loc[:, 'c_out'] = geo_labels[x:2*x]
+    valid_df.loc[:, 'c_in'] = geo_labels[2*x:2*x + y]
+    valid_df.loc[:, 'c_out'] = geo_labels[2*x + y:2*x + 2*y]
+    test_df.loc[:, 'c_in'] = geo_labels[2*x + 2*y:2*x + 2*y + z]
+    test_df.loc[:, 'c_out'] = geo_labels[2*x + 2*y + z:2*x + 2*y + 2*z]
+
+    train_df.loc[:, 'c_time'] = time_labels[:x]
+    valid_df.loc[:, 'c_time'] = time_labels[x:x + y]
+    test_df.loc[:, 'c_time'] = time_labels[x + y:x + y + z]
 
     train_df.to_pickle(os.path.join(parent_dir, 'taxi.train.nyc.pkl'))
     valid_df.to_pickle(os.path.join(parent_dir, 'taxi.valid.pkl'))
     test_df.to_pickle(os.path.join(parent_dir, 'taxi.test.no.label.pkl'))
-
-
-def train_regressors(train_df):
-    # for
-    pass
 
 
 def draw_clusters_heatmap(df, n_clusters):
@@ -115,3 +109,12 @@ def get_time_class(date_str):
     if timestamp.minute >= 30:
         time_class += 0.5
     return time_class
+
+
+def add_c_time_column(time_column, k=6):
+    # add time cluster column
+    est = KMeans(init='random', n_clusters=k, n_init=10)
+    est.fit(np.array(time_column)[np.newaxis].T)
+    est.predict(np.array(time_column).reshape(-1, 1))
+
+    return est.labels_
