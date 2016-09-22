@@ -8,6 +8,8 @@ import utils
 
 if __name__ == '__main__':
     train_df, valid_df, test_df = utils.loadings('pkl')
+    print(train_df.head(1))
+    quit()
 
     # long_coords, lat_coords = utils.stich_coordinates(train_df, valid_df, test_df)
 
@@ -15,12 +17,7 @@ if __name__ == '__main__':
 
     labels = np.genfromtxt('labels.csv', delimiter=',')
     utils.add_labels_to_data(labels, train_df, valid_df, test_df)
-    print(train_df.head(2))
-    print(train_df.tail(2))
-    print(valid_df.head(2))
 
-
-    quit()
 
 
 
