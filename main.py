@@ -13,7 +13,6 @@ if __name__ == '__main__':
     long_coords = []
     lat_coords = []
     for df in [train_df, valid_df, test_df]:
-        print(np.shape(df))
         long_coords += df.from_longitude.tolist() + df.to_longitude.tolist()
         lat_coords += df.from_latitude.tolist() + df.to_latitude.tolist()
     print(np.shape(long_coords))
