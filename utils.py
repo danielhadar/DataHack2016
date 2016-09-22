@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.externals import joblib
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 # constants
 parent_dir = '.'
@@ -56,3 +58,15 @@ def add_labels_to_data(labels, train_df, valid_df, test_df):
     train_df.to_pickle(os.path.join(parent_dir, 'taxi.train.nyc.pkl'))
     valid_df.to_pickle(os.path.join(parent_dir, 'taxi.valid.pkl'))
     test_df.to_pickle(os.path.join(parent_dir, 'taxi.test.no.label.pkl'))
+
+
+def train_regressors(train_df):
+    # for
+    pass
+
+
+def draw_clusters_heatmap(df):
+    mat = np.zeros((200, 200))
+    for index, row in df.iterrows():
+        mat[int(row.c_in), int(row.c_out)] += 1
+    np.savetxt('mat.csv', mat, delimiter=',')
