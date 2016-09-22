@@ -2,13 +2,21 @@
 <b>-- SuperFish -- DataHack2016 -- Jerusalem --</b>
 </p>
 
-<ul>
-<li> Visualisations </li>
-<li> K-Means to geographical clusters (K=100...200) </li>
-<li> For each 2 clusters - calculate regressor </li>
-<li> Use validation to learn parameters for weights vector </li>
-</ul>
+## TODO
 
+- Visualisations 
+- K-Means to geographical clusters (K=100...200) 
+- For each 2 clusters - calculate regressor 
+- Use validation to learn parameters for weights vector 
+
+## Requirements
+
+- pandas
+- shapely
+- matplotlib
+- mplleaflet
+
+```
                                  .
                                 A       ;
                       |   ,--,-/ \---,-/|  ,
@@ -30,6 +38,7 @@
                \  '  |/    ,       V    \          /        `-\
                 `|/  '  V      V           \    \.'            \_
                  '`-.       V       V        \./'\
-                     `|/-.      \ /   \ /,---`\         
+                     `|/-.      \ /   \ /,---`\
                       /   `._____V_____V'
                                  '     '
+```
