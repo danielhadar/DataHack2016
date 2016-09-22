@@ -70,6 +70,7 @@ def draw_clusters_heatmap(df):
     for index, row in df.iterrows():
         mat[int(row.c_in), int(row.c_out)] += 1
     np.savetxt('mat.csv', mat, delimiter=',')
+
 def get_day_class(date_str):
     weekday = pd.Timestamp(date_str).isoweekday()
     if weekday in [2, 3, 4]:
@@ -82,4 +83,10 @@ def get_day_class(date_str):
         # Monday
         return 4
 
-    
+def get_time_class(date_str):
+    timestamp = pd.Timestamp(date_str)
+    time_class = timestamp.hour * 2
+    if timestamp.minute >= 30:
+        time_class += 1
+    return time_class
+
