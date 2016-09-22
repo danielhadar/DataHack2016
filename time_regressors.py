@@ -26,9 +26,9 @@ models = {}
 # models = joblib.load(workdir+'regressors.joblib.pkl')
 for i in range(6):
     models[i] = GradientBoostingRegressor(n_estimators=100,
-                                                   learning_rate=0.1,
-                                                   subsample=.5,
-                                                   max_depth=2)
+                                           learning_rate=0.1,
+                                           subsample=.5,
+                                           max_depth=2)
     models[i].fit(df.drop('y', axis=1).loc[df.clsts == i], df.y.loc[df.clsts == i])
 # valid = pd.read_csv(workdir + 'taxi.valid.csv')
 # valid['time'] = valid.from_datetime.apply(lambda x: pd.Timestamp(x).hour * 3600 + pd.Timestamp(x).minute * 60 + pd.Timestamp(x).second)
