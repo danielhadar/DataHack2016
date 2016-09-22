@@ -25,9 +25,11 @@ if __name__ == '__main__':
     # print("draw heatmap")
     # utils.draw_clusters_heatmap(train_df, n_clusters=n_clusters)
 
-    learning.cross_validation(pd.concat([train_df, valid_df]), validation_percent=.033)
 
-    # print(train_df.head(1))
+    utils.add_time_cluster_column(train_df)
+
+    # learning.cross_validation(pd.concat([train_df, valid_df]), validation_percent=.033)
+
 
 
 

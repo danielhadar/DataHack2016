@@ -107,7 +107,13 @@ def get_day_class(date_str):
 
 def get_time_class(date_str):
     timestamp = pd.Timestamp(date_str)
-    time_class = timestamp.hour * 2
+    time_class = timestamp.hour
     if timestamp.minute >= 30:
-        time_class += 1
+        time_class += .5
     return time_class
+
+
+def add_time_cluster_column(df, k=8):
+    print(df.head(1))
+    kmeans = KMeans(init='k-means++', n_clusters=k, n_init=10)
+    kmeans.fit(np.array(df.time)[np.newaxis].T)
