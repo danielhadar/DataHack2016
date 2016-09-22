@@ -3,11 +3,14 @@ import numpy as np
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import mplleaflet as mpl
+from sklearn.externals import joblib
+
 workdir = 'C:\\Users\\nirfi\\Downloads\\taxi.train.csv\\'
 
 df = pd.read_csv(workdir + 'kusomo.csv')
-points = zip(df.to_longitude, df.to_latitude) + zip(df.from_longitude, df.from_latitude)
-kmeans = KMeans(init='k-means++', n_clusters=20, n_init=15)
+points = list(zip(df.to_longitude, df.to_latitude)) + list(zip(df.from_longitude, df.from_latitude))
+# kmeans = KMeans(init='k-means++', n_clusters=20, n_init=15)
+kmeans = joblib.load(workdir + 'kmeans_estimator.joblib.pkl')
 
 partial = points[:100000]
 h = 0.002
@@ -29,3 +32,12 @@ plt.contour(xx, yy, Z, LineWidth = 4, extent=(xx.min(), xx.max(), yy.min(), yy.m
 #            aspect='auto', origin='lower', alpha=0.5)
 
 mpl.show()
+
+plt.figure(2)
+plt.clf()
+plt.imshow(Z, interpolation='nearest',
+           extent=(xx.min(), xx.max(), yy.min(), yy.max()),
+           cmap=plt.cm.Paired,
+           aspect='auto', origin='lower', alpha=0.5)
+
+plt.show()
