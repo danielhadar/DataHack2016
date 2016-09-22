@@ -31,15 +31,3 @@ def cross_validation(data, validation_percent):
 
         final_results.append(np.mean(np.power(np.array(predicted_y)-np.array(test_data.y),2)))
         print(final_results)
-
-
-def learn(train, test):
-    pass
-
-
-
-# for 3 iterations:
-#   split to train and validation
-#   train regressors (100 - empty)
-#   test over validation set and print error
-
