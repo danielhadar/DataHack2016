@@ -3,6 +3,7 @@
 </p>
 
 ## TODO
+<li> Handle outliers in test-data! </li>
 
 - Visualisations 
 - K-Means to geographical clusters (K=100...200) 
@@ -42,3 +43,7 @@
                       /   `._____V_____V'
                                  '     '
 ```
+
+<ul>
+<li> Cleaned Outliers </li>
+</ul>
