@@ -3,14 +3,11 @@
 import sys
 import pandas
 from shapely.geometry import Point, box
+from config import nyc_bb
 
 if len(sys.argv) != 3:
     print("usage: " + sys.argv[0] + " <src_csv> <dest_csv>")
     exit(1)
-
-
-# From https://github.com/mapzen/metroextractor-cities/blob/master/cities.json
-nyc_bb = box(-74.501, 40.345, -73.226, 41.097)
 
 def in_nyc(row):
     from_point = Point(row['from_longitude'], row['from_latitude'])
