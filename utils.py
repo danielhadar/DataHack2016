@@ -8,20 +8,34 @@ import matplotlib.pyplot as plt
 
 # constants
 parent_dir = '.'
+data_files = ['taxi.train.nyc', 'taxi.valid.csv', 'taxi.test.no.label']
 
 
-def loadings(type):
-    # type is 'csv' or 'pkl'
-    if type == 'csv':
-        train_df = pd.read_csv(os.path.join(parent_dir, 'taxi.train.nyc.csv'))
-        valid_df = pd.read_csv(os.path.join(parent_dir, 'taxi.valid.csv'))
-        test_df = pd.read_csv(os.path.join(parent_dir, 'taxi.test.no.label.csv'))
-    elif type == 'pkl':
-        train_df = pd.read_pickle(os.path.join(parent_dir, 'taxi.train.nyc.pkl'))
-        valid_df = pd.read_pickle(os.path.join(parent_dir, 'taxi.valid.pkl'))
-        test_df = pd.read_pickle(os.path.join(parent_dir, 'taxi.test.no.label.pkl'))
+def loadings(file_type):
+    loaders = {'csv': pd.read_csv,
+            'pkl': pd.read_pickle}
+    if file_type not in loaders.keys():
+        return None
 
-    return train_df, valid_df, test_df
+    loader = loaders[file_type]
+    frames = []
+    for data_file in data_files:
+        file_name = os.path.join(parent_dir, data_file) + '.' + file_type
+        frames.append(loaders(file_name))
+
+    return frames
+
+def make_pickles():
+    for data_file in data_files:
+        file_path_base = os.path.join(parent_dir, data_file)
+        df = pd.read_csv(file_path_base + '.csv')
+        if 'train' in file_path_base:
+            enrich(df)
+        df.to_pickle(file_path_base + '.pkl')
+
+def enrich(df):
+    df['weekday'] = df['from_datetime'].apply(get_day_class)
+    df['time_of_day'] = df['from_datetime'].apply(get_time_class)
 
 
 def calc_clusters(points, init='k-means++', n_clusters=200, n_init=1):
