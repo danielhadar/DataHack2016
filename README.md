@@ -7,6 +7,7 @@
 <li> K-Means to geographical clusters (K=100...200) </li>
 <li> For each 2 clusters - calculate regressor </li>
 <li> Use validation to learn parameters for weights vector </li>
+<li> Handle outliers in test-data! </li>
 </ul>
 
                                  .
@@ -33,3 +34,7 @@
                      `|/-.      \ /   \ /,---`\         
                       /   `._____V_____V'
                                  '     '
+
+<ul>
+<li> Cleaned Outliers </li>
+</ul>
