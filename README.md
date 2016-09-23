@@ -2,9 +2,9 @@
 <b>-- SuperFish -- DataHack2016 -- Jerusalem --</b>
 </p>
 
-## TODO
-<li> Handle outliers in test-data! </li>
-<li> n_estimators = 1000 !!! </li>
+## Taxi Data Challenge
+Problem Definition: Given 2,000,000 Taxi Rides in Manhattan Area, predict travel time for a ride.
+2-Steps Model: ~100 GradientBoostRegressors for each trip between clusters, ~8 GradientBoostRegressors for each time-block of day.
 
 ## Requirements
 
@@ -39,7 +39,3 @@
                       /   `._____V_____V'
                                  '     '
 ```
-
-<ul>
-<li> Cleaned Outliers </li>
-</ul>
