@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     train_df, valid_df, test_df = utils.loadings('pkl')
     # learning.cross_validation(pd.concat([train_df, valid_df]), validation_percent=.033)
-    learning.final_run(pd.concat([train_df, valid_df, test_df]), len(train_df)+len(valid_df), len(test_df))
+    learning.final_run(pd.concat([train_df, valid_df, test_df]), len(train_df), len(valid_df), len(test_df))
 
 
 
